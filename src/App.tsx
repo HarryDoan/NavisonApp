@@ -1,9 +1,12 @@
+import RootStack from './navigation/RootStack';
 import i18n from '@i18n';
 import {allUsers} from '@redux/components/selectors';
 import {persistor, store} from '@redux/store';
+import {COLORS} from '@theme';
 import React, {FC, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Text, View, StyleSheet} from 'react-native';
+import {StatusBar} from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {enableScreens} from 'react-native-screens';
 import SplashScreen from 'react-native-splash-screen';
 import {useSelector} from 'react-redux';
@@ -16,35 +19,12 @@ const AppComponent = () => {
   const usersList = useSelector(allUsers);
 
   const {t} = useTranslation();
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'center',
-      paddingVertical: 15,
-      backgroundColor: '#9CD7CB',
-    },
-    header_text: {
-      color: 'crimson',
-      fontSize: 16,
-      fontWeight: 'bold',
-      textAlign: 'center',
-    },
-    intro_text: {
-      color: 'blue',
-      fontSize: 16,
-      fontWeight: 'bold',
-      textAlign: 'center',
-    },
-  });
-  return (
-    <View style={styles.container}>
-      <Text style={styles.header_text}> {t('Homepage.welcome')}</Text>
 
-      <Text
-        style={
-          styles.intro_text
-        }>{`Mình tên là ${usersList[0].first_name} ${usersList[0].last_name}`}</Text>
-    </View>
+  return (
+    <>
+      <StatusBar barStyle="light-content" backgroundColor={COLORS.bg_primary} />
+      <RootStack />
+    </>
   );
 };
 
@@ -60,7 +40,9 @@ const App: FC = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <AppComponent />
+        <SafeAreaProvider>
+          <AppComponent />
+        </SafeAreaProvider>
       </PersistGate>
     </Provider>
   );

@@ -72,7 +72,7 @@ const TabButton = props => {
         <Image
           style={{
             width: 25,
-            height: 25,
+            height: 27,
             resizeMode: 'stretch',
           }}
           source={focused ? item?.icon_active : item?.icon}

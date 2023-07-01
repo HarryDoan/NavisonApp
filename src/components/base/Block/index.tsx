@@ -6,7 +6,6 @@ import {
   handleSquare,
 } from '../../shared';
 import styles from './styles';
-import {COLORS} from '@theme';
 import {hs, hScale} from '@utils/responses';
 import React, {ReactNode} from 'react';
 import {StyleSheet, View, ViewProps, StyleProp} from 'react-native';

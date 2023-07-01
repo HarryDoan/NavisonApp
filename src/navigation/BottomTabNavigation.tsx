@@ -1,5 +1,6 @@
 import HomeScreen from '../screens/bottom/HomeScreen';
 import {icons} from '@assets';
+import {Text} from '@components';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLORS} from '@theme';
 import React, {useEffect, useRef} from 'react';
@@ -50,11 +51,11 @@ const TabButton = props => {
         if (focused) {
           viewRef.current.animate({
             0: {scale: 0.5, rotate: '0deg'},
-            1: {scale: 1.25, rotate: '360deg'},
+            1: {scale: 1, rotate: '360deg'},
           });
         } else {
           viewRef.current.animate({
-            0: {scale: 1.25, rotate: '360deg'},
+            0: {scale: 0.5, rotate: '360deg'},
             1: {scale: 1, rotate: '0deg'},
           });
         }
@@ -78,6 +79,13 @@ const TabButton = props => {
           source={focused ? item?.icon_active : item?.icon}
         />
       </Animatable.View>
+      <Text
+        marginTop={10}
+        fontSize={12}
+        bold
+        color={focused ? COLORS.yellow : COLORS.black_text}>
+        {item?.label}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -90,12 +98,12 @@ const BottomContainer = () => {
         tabBarStyle: {
           height: 60,
           position: 'absolute',
-          bottom: 15,
-          right: 15,
-          left: 15,
-          borderRadius: 15,
-          borderTopColor: COLORS.primary,
-          backgroundColor: COLORS.primary,
+          bottom: 0,
+          right: 0,
+          left: 0,
+          paddingTop: 5,
+          borderTopColor: COLORS.bg_primary,
+          backgroundColor: COLORS.bg_primary,
         },
       }}>
       {TabArr.map((item, index) => {
@@ -120,6 +128,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 5,
   },
 });
 

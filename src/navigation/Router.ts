@@ -1,9 +1,13 @@
 export default {
-  //root main
+  // Root Main
   AUTH_CONTAINER: 'AUTH_CONTAINER',
   BOTTOM_CONTAINER: 'BOTTOM_CONTAINER',
   COMMON_CONTAINER: 'COMMON_CONTAINER',
 
-  // bottom
+  // Bottom Tab
   HOME_SCREEN: 'HOME_SCREEN',
+
+  // Common Screen
+
+  CHART_SCREEN: 'CHART_SCREEN',
 };

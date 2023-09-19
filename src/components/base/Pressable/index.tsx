@@ -8,12 +8,12 @@ import {
   handleSquare,
 } from '@components/shared';
 import {hs, vs} from '@utils/responses';
-import React, {ReactNode, FC} from 'react';
+import React, {ReactNode} from 'react';
 import {
   Pressable as RNPressable,
   PressableProps,
   StyleSheet,
-  ViewStyle,
+  GestureResponderEvent,
   TextProps,
 } from 'react-native';
 
@@ -115,6 +115,7 @@ interface PressProps extends PressableProps {
   children?: ReactNode;
   labelProps?: TextProps;
   disabled?: boolean;
+  onPress?: (event: GestureResponderEvent) => void;
   // style: any
 }
 

@@ -1,4 +1,5 @@
 import BottomContainer from './BottomTabNavigation';
+import CommonContainer from './CommonContainer';
 import {navigationRef} from './NavigationRef';
 import Router from './Router';
 import {NavigationContainer} from '@react-navigation/native';
@@ -21,12 +22,12 @@ const RootStack = () => {
           name={Router.BOTTOM_CONTAINER}
           component={BottomContainer}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name={Router.COMMON_CONTAINER}
           component={CommonContainer}
         />
 
-        <Stack.Screen name={Router.AUTH_CONTAINER} component={AuthContainer} /> */}
+        {/* <Stack.Screen name={Router.AUTH_CONTAINER} component={AuthContainer} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

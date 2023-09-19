@@ -16,4 +16,12 @@ export const icons = {
   ic_eye_lock: require('./icons/ic_eye_lock.png'),
   ic_search: require('./icons/ic_search.png'),
   ic_notify: require('./icons/ic_notify.png'),
+
+  //Common Screen
+  ic_go_back: require('./icons/ic_go_back.png'),
+};
+export const IMAGES = {
+  img_1: require('./images/img_1.png'),
+  img_2: require('./images/img_2.png'),
+  img_3: require('./images/img_3.png'),
 };

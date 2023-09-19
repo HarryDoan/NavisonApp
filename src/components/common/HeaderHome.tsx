@@ -1,12 +1,23 @@
 import {icons} from '@assets';
 import Block from '@components/base/Block';
 import Image from '@components/base/Image';
+import Pressable from '@components/base/Pressable';
 import Text from '@components/base/Text';
 import {COLORS} from '@theme';
 import React from 'react';
 import {TextInput} from 'react-native';
 
-const HeaderHome = () => {
+const HeaderHome = ({value, handleSubmit}: any) => {
+  React.useEffect(() => {
+    if (value !== 0) {
+      console.log('====================================');
+      console.log('hello');
+      console.log('value is: ', value);
+      console.log('====================================');
+    }
+  }, [value]);
+
+  console.log('hello');
   return (
     <Block
       style={{
@@ -32,7 +43,8 @@ const HeaderHome = () => {
           backgroundColor: COLORS.primary,
           justifyContent: 'center',
         }}>
-        <Block
+        <Pressable
+          onPress={() => handleSubmit('ok')}
           style={{
             position: 'absolute',
             left: 10,
@@ -45,7 +57,7 @@ const HeaderHome = () => {
             }}
             source={icons.ic_search}
           />
-        </Block>
+        </Pressable>
         <TextInput
           placeholder="Bitcoin"
           placeholderTextColor={COLORS.black_text}
@@ -94,4 +106,4 @@ const HeaderHome = () => {
   );
 };
 
-export default HeaderHome;
+export default React.memo(HeaderHome);

@@ -1,6 +1,8 @@
 import Block from '@components/base/Block';
 import Pressable from '@components/base/Pressable';
 import Text from '@components/base/Text';
+import {commonRoot} from '@navigation/NavigationRef';
+import Router from '@navigation/Router';
 import {COLORS} from '@theme';
 import React from 'react';
 
@@ -15,8 +17,12 @@ type ItemType = {
   idx: number;
 };
 const MarketItem = ({item, idx}: ItemType) => {
+  const handleJumpToChart = (item: any) => {
+    commonRoot.navigate(Router.CHART_SCREEN, {item: item});
+  };
+
   return (
-    <Block>
+    <Pressable onPress={() => handleJumpToChart(item)}>
       {idx === 0 ? (
         <Block justifyCenter marginVertical={10} height={40}>
           <Text color={COLORS.white_text} medium fontSize={16}>
@@ -47,7 +53,7 @@ const MarketItem = ({item, idx}: ItemType) => {
           </Pressable>
         </Block>
       )}
-    </Block>
+    </Pressable>
   );
 };
 

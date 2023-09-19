@@ -4,8 +4,7 @@ import {
   NavigationContainerRef,
 } from '@react-navigation/native';
 
-export const navigationRef: NavigationContainerRef =
-  createNavigationContainerRef();
+export const navigationRef = createNavigationContainerRef();
 
 const rootNavigate = (
   rootName: string,

@@ -26,6 +26,19 @@ target 'AwesomeProject' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+    # React Native Permissions
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  # Add this line to your Podfile
+  pod 'Permission-Camera', :path => '../node_modules/react-native-permissions/ios/Camera'
+
+  # Add more permissions if needed, e.g., for location
+  pod 'Permission-LocationAlways', :path => '../node_modules/react-native-permissions/ios/LocationAlways'
+
+  # Enable modular headers for FirebaseCoreInternal and GoogleUtilities
+  pod 'FirebaseCoreInternal', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  # Add any other Firebase pods you need here
+
   target 'AwesomeProjectTests' do
     inherit! :complete
     # Pods for testing

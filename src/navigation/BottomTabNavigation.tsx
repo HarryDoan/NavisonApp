@@ -1,10 +1,10 @@
-import HomeScreen from '../screens/bottom/HomeScreen';
-import {icons} from '@assets';
-import {Text} from '@components';
+import {icons} from '@assets/index';
+import {Text} from '@components/index';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {COLORS} from '@theme';
+import HomeScreen from '@screens/bottom/Home';
+import {COLORS} from '@theme/index';
 import React, {useEffect, useRef} from 'react';
-import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {Image, Pressable, StyleSheet, TouchableOpacity} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 const Tab = createBottomTabNavigator();
@@ -39,36 +39,48 @@ const TabArr = [
     component: HomeScreen,
   },
 ];
+type TabRoute = {
+  route: string;
+  label: string;
+  icon: any;
+  icon_active: any;
+  component: React.ComponentType<any>;
+};
 
-const TabButton = props => {
-  const {item, onPress, accessibilityState} = props;
-  const focused = accessibilityState.selected;
-  const viewRef = useRef(null);
+const TabButton: React.FC<
+  | {
+      item: TabRoute;
+      onPress: () => void;
+      accessibilityState: any;
+    }
+  | any
+> = ({item, onPress, accessibilityState}) => {
+  const {focused} = accessibilityState;
+  const viewRef = useRef<Animatable.View | any>(null);
 
   useEffect(() => {
-    if (viewRef.current) {
-      const animateTab = () => {
+    const animateTab = () => {
+      const currentViewRef = viewRef.current as any;
+      if (currentViewRef) {
         if (focused) {
-          viewRef.current.animate({
+          currentViewRef.animate({
             0: {scale: 0.5, rotate: '0deg'},
             1: {scale: 1, rotate: '360deg'},
           });
         } else {
-          viewRef.current.animate({
+          currentViewRef.animate({
             0: {scale: 0.5, rotate: '360deg'},
             1: {scale: 1, rotate: '0deg'},
           });
         }
-      };
+      }
+    };
 
-      animateTab();
-    }
+    animateTab();
   }, [focused]);
+
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      activeOpacity={1}
-      style={styles.container}>
+    <Pressable onPress={onPress} style={styles.container}>
       <Animatable.View ref={viewRef} duration={1000} style={styles.container}>
         <Image
           style={{
@@ -86,7 +98,7 @@ const TabButton = props => {
         color={focused ? COLORS.yellow : COLORS.black_text}>
         {item?.label}
       </Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

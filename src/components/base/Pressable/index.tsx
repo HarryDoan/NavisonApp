@@ -7,14 +7,14 @@ import {
   handleRound,
   handleSquare,
 } from '@components/shared';
-import {hs, vs} from '@utils/responses';
-import React, {ReactNode, FC} from 'react';
+import {hs, vs} from '@utils/responsive';
+import React, {FC, ReactNode} from 'react';
 import {
-  Pressable as RNPressable,
   PressableProps,
+  Pressable as RNPressable,
   StyleSheet,
-  ViewStyle,
   TextProps,
+  ViewStyle,
 } from 'react-native';
 
 interface CustomPressableProps extends PressableProps {

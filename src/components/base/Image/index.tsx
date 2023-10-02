@@ -6,9 +6,9 @@ import {
   handleRound,
   handleSquare,
 } from '@components/shared';
-import {hScale, hs} from '@utils/responses';
+import {hs, hScale} from '@utils/responsive';
 import React, {ReactNode} from 'react';
-import {StyleSheet, ImageURISource, StyleProp} from 'react-native';
+import {ImageURISource, StyleProp, StyleSheet} from 'react-native';
 import FastImage, {ResizeMode} from 'react-native-fast-image';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 

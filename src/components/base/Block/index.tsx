@@ -6,9 +6,9 @@ import {
   handleSquare,
 } from '../../shared';
 import styles from './styles';
-import {hs, hScale} from '@utils/responses';
+import {hs, hScale} from '@utils/responsive';
 import React, {ReactNode} from 'react';
-import {StyleSheet, View, ViewProps, StyleProp} from 'react-native';
+import {StyleProp, StyleSheet, View, ViewProps} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 interface BlockProps extends ViewProps {

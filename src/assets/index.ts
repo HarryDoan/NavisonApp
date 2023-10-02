@@ -17,3 +17,5 @@ export const icons = {
   ic_search: require('./icons/ic_search.png'),
   ic_notify: require('./icons/ic_notify.png'),
 };
+
+export const Images = {};

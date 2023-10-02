@@ -3,7 +3,7 @@ import {navigationRef} from './NavigationRef';
 import Router from './Router';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {COLORS} from '@theme';
+import {COLORS} from '@theme/index';
 import React from 'react';
 import {StatusBar} from 'react-native';
 

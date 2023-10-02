@@ -1,4 +1,4 @@
-import HomeScreen from './HomeScreen';
+import HomeScreen from './Home';
 import Router from '@navigation/Router';
 
 export const bottom = {

@@ -80,7 +80,6 @@ const TabButton = props => {
         />
       </Animatable.View>
       <Text
-        marginTop={10}
         fontSize={12}
         bold
         color={focused ? COLORS.yellow : COLORS.black_text}>

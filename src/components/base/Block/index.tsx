@@ -73,7 +73,7 @@ interface BlockProps extends ViewProps {
   safePaddingAreaBottom?: boolean;
   safeMarginAreaBottom?: boolean;
   // width, height
-  width?: number;
+  width?: number | string;
   height?: number;
   maxWidth?: number;
   maxHeight?: number;

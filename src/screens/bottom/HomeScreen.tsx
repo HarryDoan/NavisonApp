@@ -1,129 +1,98 @@
-import {IMAGES, icons} from '@assets';
-import {Block, Image} from '@components';
-import {width} from '@utils/responses';
-import React, {useRef} from 'react';
-import {Dimensions, ScrollView, Text, View} from 'react-native';
+/* eslint-disable prettier/prettier */
+import {Block, Text} from '@components';
+import HeaderTitle from '@components/common/HeaderTitle';
+import {COLORS} from '@theme';
+import {fakeData} from '@utils/fakeData';
+import {height, width} from '@utils/responses';
+import React from 'react';
+import {View, FlatList} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
-const HomeScreen = () => {
-  const data = [
-    {
-      id: 1,
-
-      title: 'Wines & Spirits',
-      data: [
-        {
-          id: 1,
-          title: 'Wines & Spirits',
-          img: IMAGES.img_1,
-        },
-        {
-          id: 2,
-          title: 'Beauty',
-          img: IMAGES.img_2,
-        },
-        {
-          id: 1,
-          title: 'Wines & Spirits',
-          img: IMAGES.img_3,
-        },
-        {
-          id: 2,
-          title: 'Beauty',
-          img: IMAGES.img_3,
-        },
-      ],
-    },
-    {
-      id: 2,
-
-      title: 'Wines & Spirits',
-      data: [
-        {
-          id: 1,
-          title: 'Wines & Spirits',
-          img: IMAGES.img_1,
-        },
-        {
-          id: 2,
-          title: 'Beauty',
-          img: IMAGES.img_2,
-        },
-        {
-          id: 1,
-          title: 'Wines & Spirits',
-          img: IMAGES.img_3,
-        },
-        {
-          id: 2,
-          title: 'Beauty',
-          img: IMAGES.img_3,
-        },
-      ],
-    },
-  ];
-
-  const scrollViewRef = useRef(null);
+const MainScreen = () => {
+  const connectToDevice = () => {};
   return (
-    <View>
-      <View
+    <LinearGradient
+      colors={['#29313C', '#172E4E']}
+      start={{x: 0, y: 0}}
+      end={{x: 0, y: 1}}>
+      <Block
+        paddingHorizontal={15}
         style={{
-          alignSelf: 'center',
+          alignItems: 'center',
+          height: height,
         }}>
-        <Text
-          style={{
-            fontSize: 18,
-            fontWeight: 'bold',
-            color: 'black',
-            marginBottom: 10,
-          }}>
-          Featured Brands
-        </Text>
-      </View>
-      <ScrollView
-        ref={scrollViewRef}
-        scrollEventThrottle={16}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        onScroll={event => {
-          const offsetX = event.nativeEvent.contentOffset.x;
-          const activeIndex = Math.floor(
-            offsetX / Dimensions.get('window').width,
-          );
-        }}>
-        {data.map((item, index) => (
-          <Block
-            row
-            wrap
-            key={index}
-            style={{
-              width: width,
-              marginRight: 15,
-            }}>
-            {item?.data?.map((i, index) => (
-              <Block
-                wrap
-                key={i.id}
+        <HeaderTitle />
+        <FlatList
+          data={fakeData}
+          keyExtractor={(item: any) => item?.id}
+          ItemSeparatorComponent={(props: any) => {
+            console.log(props);
+            return (
+              <View
                 style={{
-                  marginLeft: 6,
-                  paddingHorizontal: 5,
-                  paddingVertical: 10,
-                  borderRadius: 10,
+                  height: 5,
+                }}
+              />
+            );
+          }}
+          renderItem={({item, index}) => (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <View
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 60,
+                  backgroundColor: '#29313C',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  // paddingLeft: -5,
                 }}>
-                <Image
-                  radius={5}
-                  resizeMode="stretch"
-                  width={width / 3.75}
-                  height={125}
-                  source={i.img}
-                />
-              </Block>
-            ))}
-          </Block>
-        ))}
-      </ScrollView>
-    </View>
+                <View
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 50,
+                    backgroundColor: 'orange',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: '700',
+                    }}
+                    onPress={() => connectToDevice()}>
+                    {item?.name}
+                  </Text>
+                </View>
+              </View>
+
+              <View
+                style={{
+                  height: 50,
+                  width: '100%',
+                  borderBottomRightRadius: 10,
+                  borderTopRightRadius: 10,
+                  backgroundColor: COLORS.yellow,
+                  justifyContent: 'center',
+                  paddingHorizontal: 30,
+                  marginLeft: -width * 0.05,
+                  zIndex: -1,
+                }}>
+                <Text color={COLORS.black_text} bold fontSize={18}>
+                  Device {index + 1}
+                </Text>
+              </View>
+            </View>
+          )}
+        />
+      </Block>
+    </LinearGradient>
   );
 };
 
-export default HomeScreen;
+export default MainScreen;

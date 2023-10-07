@@ -1,4 +1,3 @@
-// WifiConfigScreen.js
 import {icons} from '@assets';
 import {Block, Image, Pressable} from '@components';
 import HeaderHome from '@components/common/HeaderHome';
@@ -7,19 +6,21 @@ import {COLORS} from '@theme';
 import {height, width} from '@utils/responses';
 import axios from 'axios';
 import React, {useState} from 'react';
-import {View, TextInput, Button} from 'react-native';
+import {Button, TextInput, View} from 'react-native';
+
+// WifiConfigScreen.js
 
 const WifiConfigScreen = ({}) => {
   const [ssid, setSsid] = useState('');
   const [password, setPassword] = useState('');
 
   const sendWifiConfig = async () => {
-    const espIp = 'http://192.168.4.1/config';
+    console.log('====================================');
+    console.log('12313');
+    console.log('====================================');
+    const espIp = 'http://192.168.4.1';
     try {
-      await axios.post(
-        `${espIp}/config`,
-        'ssid=YourSSID&password=YourPassword',
-      );
+      await axios.post(`${espIp}/config`, `ssid=${ssid}&password=${password}`);
       console.log('Configuration sent successfully');
     } catch (error) {
       console.error('Error sending configuration', error);

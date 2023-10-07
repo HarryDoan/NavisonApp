@@ -1,6 +1,6 @@
-import ChartScreen from './Chart';
+import WifiConfigScreen from './WifiConfigScreen';
 import Router from '@navigation/Router';
 
 export const common = {
-  [Router.CHART_SCREEN]: ChartScreen,
+  [Router.WIFI_SCREEN]: WifiConfigScreen,
 };

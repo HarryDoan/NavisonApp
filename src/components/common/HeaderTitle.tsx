@@ -3,21 +3,16 @@ import Block from '@components/base/Block';
 import Image from '@components/base/Image';
 import Pressable from '@components/base/Pressable';
 import Text from '@components/base/Text';
+import {commonRoot} from '@navigation/NavigationRef';
+import Router from '@navigation/Router';
 import {COLORS} from '@theme';
 import React from 'react';
 import {TextInput} from 'react-native';
 
 const HeaderHome = ({value, handleSubmit}: any) => {
-  React.useEffect(() => {
-    if (value !== 0) {
-      console.log('====================================');
-      console.log('hello');
-      console.log('value is: ', value);
-      console.log('====================================');
-    }
-  }, [value]);
-
-  console.log('hello');
+  const handleNavigate = () => {
+    commonRoot.navigate(Router.WIFI_SCREEN);
+  };
   return (
     <Block
       style={{
@@ -95,12 +90,14 @@ const HeaderHome = ({value, handleSubmit}: any) => {
             99+
           </Text>
         </Block>
-        <Image
-          width={32}
-          height={35}
-          resizeMode="stretch"
-          source={icons.ic_notify}
-        />
+        <Pressable onPress={handleNavigate}>
+          <Image
+            width={32}
+            height={35}
+            resizeMode="stretch"
+            source={icons.ic_notify}
+          />
+        </Pressable>
       </Block>
     </Block>
   );

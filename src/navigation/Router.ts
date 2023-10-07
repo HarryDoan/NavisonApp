@@ -9,5 +9,5 @@ export default {
 
   // Common Screen
 
-  CHART_SCREEN: 'CHART_SCREEN',
+  WIFI_SCREEN: 'WIFI_SCREEN',
 };

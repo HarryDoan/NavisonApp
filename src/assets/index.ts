@@ -1,4 +1,7 @@
 export const icons = {
+  //Logo
+  ic_logo: require('./icons/ic_logo.png'),
+
   // BOTTOM icons
   ic_home: require('./icons/ic_home.png'),
   ic_wallet: require('./icons/ic_wallet.png'),

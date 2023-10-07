@@ -32,7 +32,7 @@ const HeaderCommon = ({title}: HeaderCommonType) => {
         <Image square={25} resizeMode="cover" source={icons.ic_go_back} />
       </Pressable>
       <Block>
-        <Text regular fontSize={16} color={COLORS.white_text}>
+        <Text medium fontSize={18} color={COLORS.white_text}>
           {title || ''}
         </Text>
       </Block>

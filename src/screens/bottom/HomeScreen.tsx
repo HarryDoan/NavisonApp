@@ -1,18 +1,25 @@
 /* eslint-disable prettier/prettier */
-import {Block, Text} from '@components';
+import {Block, Pressable, Text} from '@components';
 import HeaderTitle from '@components/common/HeaderTitle';
+import {commonRoot} from '@navigation/NavigationRef';
+import Router from '@navigation/Router';
 import {COLORS} from '@theme';
 import {fakeData} from '@utils/fakeData';
 import {height, width} from '@utils/responses';
 import React from 'react';
-import {View, FlatList} from 'react-native';
+import {FlatList} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const MainScreen = () => {
-  const connectToDevice = () => {};
+  const handleChangeTitle = (item: any) => {
+    commonRoot.navigate(Router.CHANGE_TITLE_SCREEN, {
+      item,
+    });
+  };
+
   return (
     <LinearGradient
-      colors={['#29313C', '#172E4E']}
+      colors={COLORS.gradient_1}
       start={{x: 0, y: 0}}
       end={{x: 0, y: 1}}>
       <Block
@@ -25,10 +32,9 @@ const MainScreen = () => {
         <FlatList
           data={fakeData}
           keyExtractor={(item: any) => item?.id}
-          ItemSeparatorComponent={(props: any) => {
-            console.log(props);
+          ItemSeparatorComponent={() => {
             return (
-              <View
+              <Block
                 style={{
                   height: 5,
                 }}
@@ -36,12 +42,12 @@ const MainScreen = () => {
             );
           }}
           renderItem={({item, index}) => (
-            <View
+            <Block
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
               }}>
-              <View
+              <Block
                 style={{
                   width: 60,
                   height: 60,
@@ -49,45 +55,44 @@ const MainScreen = () => {
                   backgroundColor: '#29313C',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  // paddingLeft: -5,
                 }}>
-                <View
+                <Block
                   style={{
                     width: 50,
                     height: 50,
                     borderRadius: 50,
-                    backgroundColor: 'orange',
+                    backgroundColor: COLORS.yellow,
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
                   <Text
+                    color={COLORS.black_text}
+                    bold
                     style={{
                       fontSize: 15,
-                      fontWeight: '700',
-                    }}
-                    onPress={() => connectToDevice()}>
+                    }}>
                     {item?.name}
                   </Text>
-                </View>
-              </View>
+                </Block>
+              </Block>
 
-              <View
+              <Pressable
+                onLongPress={() => handleChangeTitle(item)}
+                borderRightRadius={100}
                 style={{
                   height: 50,
-                  width: '100%',
-                  borderBottomRightRadius: 10,
-                  borderTopRightRadius: 10,
-                  backgroundColor: COLORS.yellow,
+                  width: width - 80,
+                  backgroundColor: COLORS.primary,
                   justifyContent: 'center',
                   paddingHorizontal: 30,
                   marginLeft: -width * 0.05,
                   zIndex: -1,
                 }}>
                 <Text color={COLORS.black_text} bold fontSize={18}>
-                  Device {index + 1}
+                  {`${item?.title} ${index + 1}`}
                 </Text>
-              </View>
-            </View>
+              </Pressable>
+            </Block>
           )}
         />
       </Block>

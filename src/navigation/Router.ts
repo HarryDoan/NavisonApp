@@ -10,4 +10,5 @@ export default {
   // Common Screen
 
   WIFI_SCREEN: 'WIFI_SCREEN',
+  CHANGE_TITLE_SCREEN: 'CHANGE_TITLE_SCREEN',
 };

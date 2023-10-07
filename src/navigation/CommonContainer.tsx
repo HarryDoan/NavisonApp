@@ -12,6 +12,11 @@ const CommonContainer = () => {
         name={Router.WIFI_SCREEN}
         component={common[Router.WIFI_SCREEN]}
       />
+
+      <CommonStack.Screen
+        name={Router.CHANGE_TITLE_SCREEN}
+        component={common[Router.CHANGE_TITLE_SCREEN]}
+      />
     </CommonStack.Navigator>
   );
 };

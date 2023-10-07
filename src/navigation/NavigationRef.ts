@@ -1,8 +1,5 @@
 import Router from './Router';
-import {
-  createNavigationContainerRef,
-  NavigationContainerRef,
-} from '@react-navigation/native';
+import {createNavigationContainerRef} from '@react-navigation/native';
 
 export const navigationRef = createNavigationContainerRef();
 

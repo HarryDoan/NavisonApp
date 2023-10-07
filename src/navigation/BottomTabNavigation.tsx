@@ -1,7 +1,7 @@
-import HomeScreen from '../screens/bottom/HomeScreen';
 import {icons} from '@assets';
 import {Text} from '@components';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import MainScreen from '@screens/bottom/HomeScreen';
 import {COLORS} from '@theme';
 import React, {useEffect, useRef} from 'react';
 import {Image, StyleSheet, TouchableOpacity} from 'react-native';
@@ -15,28 +15,28 @@ const TabArr = [
     label: 'Home',
     icon: icons.ic_home,
     icon_active: icons.ic_home_active,
-    component: HomeScreen,
+    component: MainScreen,
   },
   {
     route: 'Market',
     label: 'Market',
     icon: icons.ic_market,
     icon_active: icons.ic_market_active,
-    component: HomeScreen,
+    component: MainScreen,
   },
   {
     route: 'Trade',
     label: 'Trade',
     icon: icons.ic_trade,
     icon_active: icons.ic_trade_active,
-    component: HomeScreen,
+    component: MainScreen,
   },
   {
     route: 'Wallet',
     label: 'Wallet',
     icon: icons.ic_wallet,
     icon_active: icons.ic_wallet_active,
-    component: HomeScreen,
+    component: MainScreen,
   },
 ];
 

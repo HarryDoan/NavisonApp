@@ -7,10 +7,7 @@ import Router from '@navigation/Router';
 import {COLORS} from '@theme';
 import React from 'react';
 
-const HeaderHome = ({value, handleSubmit}: any) => {
-  console.log('====================================');
-  console.log(value, handleSubmit);
-  console.log('====================================');
+const HeaderHome = () => {
   const handleNavigate = () => {
     commonRoot.navigate(Router.WIFI_SCREEN);
   };

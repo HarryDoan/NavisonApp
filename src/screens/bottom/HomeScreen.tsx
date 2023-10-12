@@ -3,14 +3,37 @@ import {Block, Pressable, Text} from '@components';
 import HeaderTitle from '@components/common/HeaderTitle';
 import {commonRoot} from '@navigation/NavigationRef';
 import Router from '@navigation/Router';
+import database from '@react-native-firebase/database';
 import {COLORS} from '@theme';
 import {fakeData} from '@utils/fakeData';
 import {height, width} from '@utils/responses';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {FlatList} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const MainScreen = () => {
+  useEffect(() => {
+    database()
+      .ref('/users/123')
+      .on(
+        'value',
+        snapshot => {
+          if (snapshot.exists()) {
+            const userData = snapshot.val();
+            console.log('User data: ', userData);
+          } else {
+            console.log('Data not found');
+          }
+        },
+        error => {
+          console.error('Firebase error:', error);
+        },
+      );
+
+    console.log('User data');
+    return () => {};
+  }, []);
+
   const handleChangeTitle = (item: any) => {
     commonRoot.navigate(Router.CHANGE_TITLE_SCREEN, {
       item,

@@ -5,22 +5,32 @@ import {commonRoot} from '@navigation/NavigationRef';
 import Router from '@navigation/Router';
 import database from '@react-native-firebase/database';
 import {COLORS} from '@theme';
-import {fakeData} from '@utils/fakeData';
 import {height, width} from '@utils/responses';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const MainScreen = () => {
+  const [listCH, setListCH] = useState<any[]>([]);
+  const sortListCH = listCH.sort((a, b) => a?.name.localeCompare(b?.name));
+
   useEffect(() => {
     database()
-      .ref('/users/123')
+      .ref('/users/user_1')
       .on(
         'value',
         snapshot => {
           if (snapshot.exists()) {
             const userData = snapshot.val();
-            console.log('User data: ', userData);
+            const listArray = [];
+            for (const key in userData) {
+              listArray.push({
+                name: key,
+                value: userData[key]['value'],
+                title: userData[key]['title'],
+              });
+            }
+            setListCH(listArray);
           } else {
             console.log('Data not found');
           }
@@ -29,8 +39,6 @@ const MainScreen = () => {
           console.error('Firebase error:', error);
         },
       );
-
-    console.log('User data');
     return () => {};
   }, []);
 
@@ -39,7 +47,6 @@ const MainScreen = () => {
       item,
     });
   };
-
   return (
     <LinearGradient
       colors={COLORS.gradient_1}
@@ -53,7 +60,7 @@ const MainScreen = () => {
         }}>
         <HeaderTitle />
         <FlatList
-          data={fakeData}
+          data={sortListCH}
           keyExtractor={(item: any) => item?.id}
           ItemSeparatorComponent={() => {
             return (
@@ -84,7 +91,7 @@ const MainScreen = () => {
                     width: 50,
                     height: 50,
                     borderRadius: 50,
-                    backgroundColor: COLORS.yellow,
+                    backgroundColor: item?.value ? COLORS.yellow : COLORS.gray,
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
@@ -105,14 +112,14 @@ const MainScreen = () => {
                 style={{
                   height: 50,
                   width: width - 80,
-                  backgroundColor: COLORS.primary,
+                  backgroundColor: item?.value ? COLORS.primary : COLORS.gray,
                   justifyContent: 'center',
                   paddingHorizontal: 30,
                   marginLeft: -width * 0.05,
                   zIndex: -1,
                 }}>
                 <Text color={COLORS.black_text} bold fontSize={18}>
-                  {`${item?.title} ${index + 1}`}
+                  {`${item?.title} `}
                 </Text>
               </Pressable>
             </Block>

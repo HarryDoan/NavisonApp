@@ -1,4 +1,4 @@
-import {common} from '../screens/common';
+import {common} from '../screens/Common';
 import Router from './Router';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';

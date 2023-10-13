@@ -1,15 +1,35 @@
 import {Block, FormInput, Text} from '@components';
 import HeaderCommon from '@components/common/HeaderCommon';
+import {root} from '@navigation/NavigationRef';
+import database from '@react-native-firebase/database';
 import React, {useState} from 'react';
 
 const ChangeTitle = ({route}: any) => {
   const {item} = route?.params;
-  const [title, setTitle] = useState<string | number>(item?.title || 'value 1');
+  const [title, setTitle] = useState<string | number>(item?.title || 'none');
+
+  const handleDone = () => {
+    const itemRef = database().ref(`/users/user_1/${item?.name}`);
+    itemRef
+      .update({
+        title: title,
+      })
+      .then(() => {
+        console.log('Data updated.');
+        root.goBack();
+      })
+      .catch(error => console.error('Error updating data:', error));
+  };
+
   return (
     <Block>
-      <HeaderCommon title={`Change Title ${item?.name}`} />
+      <HeaderCommon title={`${item?.name}`} />
       <Block paddingVertical={15}>
-        <FormInput setValue_1={setTitle} value_1={title} />
+        <FormInput
+          handleDone={handleDone}
+          setValue_1={setTitle}
+          value_1={title}
+        />
       </Block>
     </Block>
   );

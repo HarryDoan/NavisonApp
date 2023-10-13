@@ -32,6 +32,7 @@ const FormInput = ({
           borderRadius: 5,
           marginBottom: 15,
         }}
+        maxLength={22}
         placeholder={value_1 || placeHolder_value_1}
         onChangeText={text => setValue_1(text)}
         value={value_1}

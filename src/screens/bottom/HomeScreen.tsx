@@ -1,18 +1,29 @@
 /* eslint-disable prettier/prettier */
-import {Block, Pressable, Text} from '@components';
+import {Block, Modal, Pressable, Text} from '@components';
 import HeaderTitle from '@components/common/HeaderTitle';
+import ListChannel from '@components/common/ListChannel';
 import {commonRoot} from '@navigation/NavigationRef';
 import Router from '@navigation/Router';
 import database from '@react-native-firebase/database';
+import actions from '@redux/actions';
 import {COLORS} from '@theme';
+import {fetchDataFromFirebase} from '@utils';
 import {height, width} from '@utils/responses';
 import React, {useEffect, useState} from 'react';
-import {FlatList} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {useDispatch} from 'react-redux';
 
 const MainScreen = () => {
+  const dispatch = useDispatch();
   const [listCH, setListCH] = useState<any[]>([]);
   const sortListCH = listCH.sort((a, b) => a?.name.localeCompare(b?.name));
+
+  useEffect(() => {
+    dispatch({
+      type: actions.SAVE_LIST_CHANNEL,
+      payload: sortListCH,
+    });
+  }, [dispatch, sortListCH]);
 
   useEffect(() => {
     database()
@@ -28,6 +39,12 @@ const MainScreen = () => {
                 name: key,
                 value: userData[key]['value'],
                 title: userData[key]['title'],
+                mode_1: userData[key]['mode_1'],
+                mode_1_counter: userData[key]['mode_1_counter'],
+                mode_2: userData[key]['mode_2'],
+                mode_2_counter: userData[key]['mode_2_counter'],
+                mode_3: userData[key]['mode_3'],
+                mode_3_counter: userData[key]['mode_3_counter'],
               });
             }
             setListCH(listArray);
@@ -47,6 +64,21 @@ const MainScreen = () => {
       item,
     });
   };
+
+  const handleConfigMode = (mode: string | number) => {
+    let filterCondition;
+    if (mode === 1) {
+      filterCondition = (item: any) => item && item?.mode_1;
+    } else if (mode === 2) {
+      filterCondition = (item: any) => item && item?.mode_2;
+    } else {
+      filterCondition = (item: any) => item && item?.mode_3;
+    }
+
+    const newList = sortListCH?.filter(filterCondition);
+
+    commonRoot.navigate(Router.CONFIG_MODE_SCREEN, {item: newList, mode});
+  };
   return (
     <LinearGradient
       colors={COLORS.gradient_1}
@@ -59,72 +91,36 @@ const MainScreen = () => {
           height: height,
         }}>
         <HeaderTitle />
-        <FlatList
-          data={sortListCH}
-          keyExtractor={(item: any) => item?.id}
-          ItemSeparatorComponent={() => {
-            return (
-              <Block
-                style={{
-                  height: 5,
-                }}
-              />
-            );
-          }}
-          renderItem={({item, index}) => (
-            <Block
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <Block
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 60,
-                  backgroundColor: '#29313C',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Block
-                  style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 50,
-                    backgroundColor: item?.value ? COLORS.yellow : COLORS.gray,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    color={COLORS.black_text}
-                    bold
-                    style={{
-                      fontSize: 15,
-                    }}>
-                    {item?.name}
-                  </Text>
-                </Block>
-              </Block>
 
-              <Pressable
-                onLongPress={() => handleChangeTitle(item)}
-                borderRightRadius={100}
-                style={{
-                  height: 50,
-                  width: width - 80,
-                  backgroundColor: item?.value ? COLORS.primary : COLORS.gray,
-                  justifyContent: 'center',
-                  paddingHorizontal: 30,
-                  marginLeft: -width * 0.05,
-                  zIndex: -1,
-                }}>
-                <Text color={COLORS.black_text} bold fontSize={18}>
-                  {`${item?.title} `}
-                </Text>
-              </Pressable>
-            </Block>
-          )}
-        />
+        <ListChannel data={sortListCH} handleChangeTitle={handleChangeTitle} />
+
+        <Block absolute bottom={height * 0.2} width={'100%'} row spaceAround>
+          <Pressable
+            onLongPress={() => handleConfigMode(1)}
+            width={75}
+            height={45}
+            justifyCenter
+            alignCenter
+            backgroundColor={COLORS.primary}
+            radius={4}>
+            <Text color={COLORS.black_text} fontSize={16} bold>
+              Mode 1
+            </Text>
+          </Pressable>
+
+          <Pressable
+            onLongPress={() => handleConfigMode(2)}
+            width={75}
+            height={45}
+            justifyCenter
+            alignCenter
+            backgroundColor={COLORS.primary}
+            radius={4}>
+            <Text color={COLORS.black_text} fontSize={16} bold>
+              Mode 2
+            </Text>
+          </Pressable>
+        </Block>
       </Block>
     </LinearGradient>
   );

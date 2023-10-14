@@ -4,7 +4,7 @@ import {root} from '@navigation/NavigationRef';
 import database from '@react-native-firebase/database';
 import React, {useState} from 'react';
 
-const ChangeTitle = ({route}: any) => {
+const ChangeTitleScreen = ({route}: any) => {
   const {item} = route?.params;
   const [title, setTitle] = useState<string | number>(item?.title || 'none');
 
@@ -35,4 +35,4 @@ const ChangeTitle = ({route}: any) => {
   );
 };
 
-export default ChangeTitle;
+export default ChangeTitleScreen;

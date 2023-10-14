@@ -32,7 +32,7 @@ interface Props {
   borderRightWidth?: number;
   borderBottomWidth?: number;
   borderLeftWidth?: number;
-  width?: number;
+  width?: number | string;
   height?: number;
   maxWidth?: number;
   maxHeight?: number;

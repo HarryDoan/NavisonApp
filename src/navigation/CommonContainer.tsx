@@ -17,6 +17,11 @@ const CommonContainer = () => {
         name={Router.CHANGE_TITLE_SCREEN}
         component={common[Router.CHANGE_TITLE_SCREEN]}
       />
+
+      <CommonStack.Screen
+        name={Router.CONFIG_MODE_SCREEN}
+        component={common[Router.CONFIG_MODE_SCREEN]}
+      />
     </CommonStack.Navigator>
   );
 };

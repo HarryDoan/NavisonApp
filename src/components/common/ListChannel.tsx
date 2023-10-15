@@ -12,7 +12,7 @@ const ListChannel = ({data, handleChangeTitle}: any) => {
   const [choiceChannel, setChoiceChannel] = useState<any>(null);
 
   const handleChangeStatus = () => {
-    const itemRef = database().ref(`/users/user_1/${choiceChannel?.name}`);
+    const itemRef = database().ref(`/users/user_2/${choiceChannel?.name}`);
     itemRef
       .update({
         value: choiceChannel?.value ? 0 : 1,

@@ -27,7 +27,7 @@ const MainScreen = () => {
 
   useEffect(() => {
     database()
-      .ref('/users/user_1')
+      .ref('/users/user_2')
       .on(
         'value',
         snapshot => {
@@ -37,6 +37,8 @@ const MainScreen = () => {
             for (const key in userData) {
               listArray.push({
                 name: key,
+                id: userData[key]['id'],
+                order: userData[key]['order'],
                 value: userData[key]['value'],
                 title: userData[key]['title'],
                 mode_1: userData[key]['mode_1'],
@@ -77,7 +79,7 @@ const MainScreen = () => {
 
     const newList = sortListCH?.filter(filterCondition);
 
-    commonRoot.navigate(Router.CONFIG_MODE_SCREEN, {item: newList, mode});
+    commonRoot.navigate(Router.CONFIG_MODE_SCREEN, {item: sortListCH, mode});
   };
   return (
     <LinearGradient

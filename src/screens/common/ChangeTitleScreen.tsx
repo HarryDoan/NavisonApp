@@ -9,7 +9,7 @@ const ChangeTitleScreen = ({route}: any) => {
   const [title, setTitle] = useState<string | number>(item?.title || 'none');
 
   const handleDone = () => {
-    const itemRef = database().ref(`/users/user_1/${item?.name}`);
+    const itemRef = database().ref(`/users/user_2/${item?.name}`);
     itemRef
       .update({
         title: title,

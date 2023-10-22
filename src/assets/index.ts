@@ -13,6 +13,12 @@ export const icons = {
   ic_trade_active: require('./icons/ic_trade_active.png'),
   ic_market_active: require('./icons/ic_market_active.png'),
 
+  ic_setting: require('./icons/ic_setting.png'),
+  ic_key: require('./icons/ic_key.png'),
+  ic_network: require('./icons/ic_network.png'),
+  ic_power: require('./icons/ic_power.png'),
+  ic_save: require('./icons/ic_save.png'),
+
   //Home Screen
   ic_user_logo: require('./icons/ic_user_logo.png'),
   ic_eye: require('./icons/ic_eye.png'),

@@ -11,10 +11,15 @@ const WifiConfigScreen = ({}) => {
   const sendWifiConfig = async () => {
     const espIp = ESP_URL;
     try {
-      await axios.post(`${espIp}/config`, `ssid=${ssid}&password=${password}`);
-      console.log('Configuration sent successfully');
+      const response = await axios.post('http://192.168.2.77/post-data', {
+        data: {
+          ssid,
+          password,
+        },
+      });
+      console.log('Response:', response.data);
     } catch (error) {
-      console.error('Error sending configuration', error);
+      console.error('Error:', error);
     }
   };
 

@@ -1,71 +1,35 @@
 /* eslint-disable prettier/prettier */
-import {Block, Modal, Pressable, Text} from '@components';
+import {icons} from '@assets';
+import {Block, Image, Pressable, Text} from '@components';
 import HeaderTitle from '@components/common/HeaderTitle';
 import ListChannel from '@components/common/ListChannel';
 import {commonRoot} from '@navigation/NavigationRef';
 import Router from '@navigation/Router';
-import database from '@react-native-firebase/database';
 import actions from '@redux/actions';
 import {COLORS} from '@theme';
-import {fetchDataFromFirebase} from '@utils';
+import {fakeData, updateStatus} from '@utils/fakeData';
 import {height, width} from '@utils/responses';
-import React, {useEffect, useState} from 'react';
-import LinearGradient from 'react-native-linear-gradient';
+import React, {useEffect, useRef, useState} from 'react';
+import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 
 const MainScreen = () => {
   const dispatch = useDispatch();
-  const [listCH, setListCH] = useState<any[]>([]);
-  const sortListCH = listCH.sort((a, b) => a?.name.localeCompare(b?.name));
+  const listCH = useSelector((state: any) => state?.users?.list_channel);
+  const sortListCH = listCH.sort((a: any, b: any) =>
+    a?.name.localeCompare(b?.name),
+  );
+  const [isShowModal, setIsShowModal] = useState<boolean>(false);
+  const [itemChoice, setItemChoice] = useState<any>(null);
+  const [disableMode, setDisableMode] = useState<boolean>(false);
+  const timeoutRef = useRef<any>(null);
 
   useEffect(() => {
     dispatch({
       type: actions.SAVE_LIST_CHANNEL,
-      payload: sortListCH,
+      payload: fakeData,
     });
-  }, [dispatch, sortListCH]);
-
-  useEffect(() => {
-    database()
-      .ref('/users/user_2')
-      .on(
-        'value',
-        snapshot => {
-          if (snapshot.exists()) {
-            const userData = snapshot.val();
-            const listArray = [];
-            for (const key in userData) {
-              listArray.push({
-                name: key,
-                id: userData[key]['id'],
-                order: userData[key]['order'],
-                value: userData[key]['value'],
-                title: userData[key]['title'],
-                mode_1: userData[key]['mode_1'],
-                mode_1_counter: userData[key]['mode_1_counter'],
-                mode_2: userData[key]['mode_2'],
-                mode_2_counter: userData[key]['mode_2_counter'],
-                mode_3: userData[key]['mode_3'],
-                mode_3_counter: userData[key]['mode_3_counter'],
-              });
-            }
-            setListCH(listArray);
-          } else {
-            console.log('Data not found');
-          }
-        },
-        error => {
-          console.error('Firebase error:', error);
-        },
-      );
-    return () => {};
-  }, []);
-
-  const handleChangeTitle = (item: any) => {
-    commonRoot.navigate(Router.CHANGE_TITLE_SCREEN, {
-      item,
-    });
-  };
+  }, [dispatch]);
 
   const handleConfigMode = (mode: string | number) => {
     let filterCondition;
@@ -81,50 +45,159 @@ const MainScreen = () => {
 
     commonRoot.navigate(Router.CONFIG_MODE_SCREEN, {item: sortListCH, mode});
   };
+
+  const handleStartMode = () => {
+    setDisableMode(true);
+    let index = 0;
+
+    const processNextItem = () => {
+      if (index < sortListCH?.length) {
+        const itemToUpdate = sortListCH[index];
+        handleUpdateListChannel(itemToUpdate);
+        updateStatus(index);
+        index++;
+        setTimeout(processNextItem, itemToUpdate?.timer || 1000);
+      } else {
+        setDisableMode(false);
+      }
+    };
+
+    processNextItem();
+  };
+  const handleUpdateListChannel = (i: any) => {
+    dispatch({
+      type: actions.SAVE_LIST_CHANNEL,
+      payload: sortListCH?.map((item: any) =>
+        item?.name === i?.name ? {...item, status: !item?.status} : item,
+      ),
+    });
+  };
+  const handleChangeStatus = () => {
+    setIsShowModal(false);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      handleUpdateListChannel(itemChoice);
+    }, 500);
+  };
+
   return (
-    <LinearGradient
-      colors={COLORS.gradient_1}
-      start={{x: 0, y: 0}}
-      end={{x: 0, y: 1}}>
-      <Block
-        paddingHorizontal={15}
-        style={{
-          alignItems: 'center',
-          height: height,
-        }}>
+    <Block flex={1} backgroundColor={COLORS.bg_primary}>
+      <Block>
         <HeaderTitle />
 
-        <ListChannel data={sortListCH} handleChangeTitle={handleChangeTitle} />
-
-        <Block absolute bottom={height * 0.2} width={'100%'} row spaceAround>
-          <Pressable
-            onLongPress={() => handleConfigMode(1)}
-            width={75}
-            height={45}
-            justifyCenter
-            alignCenter
-            backgroundColor={COLORS.primary}
-            radius={4}>
-            <Text color={COLORS.black_text} fontSize={16} bold>
-              Mode 1
-            </Text>
-          </Pressable>
-
-          <Pressable
-            onLongPress={() => handleConfigMode(2)}
-            width={75}
-            height={45}
-            justifyCenter
-            alignCenter
-            backgroundColor={COLORS.primary}
-            radius={4}>
-            <Text color={COLORS.black_text} fontSize={16} bold>
-              Mode 2
-            </Text>
-          </Pressable>
-        </Block>
+        <ListChannel
+          setIsShowModal={setIsShowModal}
+          setItemChoice={setItemChoice}
+          data={sortListCH}
+        />
       </Block>
-    </LinearGradient>
+      <Block
+        paddingHorizontal={15}
+        alignSelfCenter
+        absolute
+        bottom={35}
+        width={'100%'}
+        row
+        spaceBetween>
+        <Pressable
+          onLongPress={() => handleConfigMode(1)}
+          width={75}
+          height={45}
+          justifyCenter
+          alignCenter
+          backgroundColor={COLORS.primary}
+          radius={5}>
+          <Image source={icons.ic_setting} square={25} />
+        </Pressable>
+
+        <Pressable
+          onLongPress={() => handleConfigMode(2)}
+          width={75}
+          height={45}
+          justifyCenter
+          alignCenter
+          backgroundColor={COLORS.primary}
+          radius={5}>
+          <Image source={icons.ic_network} square={25} />
+        </Pressable>
+
+        <Pressable
+          disabled={disableMode}
+          onPress={handleStartMode}
+          width={75}
+          height={45}
+          justifyCenter
+          alignCenter
+          backgroundColor={!disableMode ? COLORS.power_off : COLORS.power_on}
+          radius={5}>
+          <Image source={icons.ic_power} square={25} />
+        </Pressable>
+      </Block>
+      {isShowModal && (
+        <Pressable
+          backgroundColor={COLORS.gray1}
+          justifyCenter
+          alignCenter
+          absoluteFillObject
+          onPress={() => setIsShowModal(false)}>
+          <Pressable
+            onPress={() => {}}
+            paddingVertical={15}
+            paddingHorizontal={15}
+            radius={10}
+            backgroundColor={COLORS.white}
+            width={width - 60}
+            height={height * 0.2}
+            alignSelfCenter>
+            <Text
+              center
+              numberOfLines={2}
+              fontSize={18}
+              semiBold
+              color={COLORS.black_text}>
+              {`Are you sure you want to change the status of Channel ${itemChoice?.name}!!`}
+            </Text>
+
+            <Block
+              row
+              width={'100%'}
+              spaceBetween
+              alignCenter
+              absolute
+              bottom={15}
+              alignSelfCenter>
+              <Pressable
+                onPress={() => setIsShowModal(false)}
+                width={width * 0.35}
+                height={45}
+                justifyCenter
+                alignCenter
+                radius={5}
+                backgroundColor={COLORS.gray}>
+                <Text color={COLORS.white} fontSize={16} bold>
+                  Cancel
+                </Text>
+              </Pressable>
+
+              <Pressable
+                onPress={() => handleChangeStatus()}
+                width={width * 0.35}
+                height={45}
+                justifyCenter
+                alignCenter
+                radius={5}
+                backgroundColor={COLORS.green}>
+                <Text color={COLORS.white} fontSize={16} bold>
+                  Confirm
+                </Text>
+              </Pressable>
+            </Block>
+          </Pressable>
+        </Pressable>
+      )}
+    </Block>
   );
 };
 

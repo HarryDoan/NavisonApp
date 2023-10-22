@@ -1,11 +1,12 @@
 import actions from '@redux/actions';
 import {reducerDefault, reducerLoadMore} from '@redux/common/reducers';
+import {fakeData} from '@utils/fakeData';
 
 const initialState = {
   data: null,
   userToken: null,
   isLoading: false,
-  list_channel: [],
+  list_channel: fakeData,
 };
 
 export const users = (state = initialState, action: any) => {

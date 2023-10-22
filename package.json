@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "androi-clean": "cd android  && ./gradlew clean && cd ..",
+    "ios": "react-native run-ios --simulator iPhone 14 Pro",
     "start": "react-native start --reset-cache",
     "start:staging": "MY_ENV=staging npx react-native start",
+    "apk-release": "cd android  && ./gradlew clean && ./gradlew assembleRelease && cd ..",
     "test": "jest",
     "lint": "eslint ."
   },

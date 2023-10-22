@@ -1,22 +1,19 @@
 import {icons} from '@assets';
 import Block from '@components/base/Block';
 import Image from '@components/base/Image';
-import Pressable from '@components/base/Pressable';
-import {commonRoot} from '@navigation/NavigationRef';
-import Router from '@navigation/Router';
+import Text from '@components/base/Text';
 import {COLORS} from '@theme';
 import React from 'react';
 
 const HeaderHome = () => {
-  const handleNavigate = () => {
-    commonRoot.navigate(Router.WIFI_SCREEN);
-  };
   return (
     <Block
+      spaceBetween
+      paddingHorizontal={15}
+      alignCenter
       style={{
         width: '100%',
         flexDirection: 'row',
-        alignItems: 'center',
         paddingVertical: 15,
       }}>
       <Image
@@ -28,29 +25,9 @@ const HeaderHome = () => {
         source={icons.ic_logo}
       />
 
-      <Block
-        style={{
-          position: 'absolute',
-          right: 20,
-        }}>
-        <Pressable onPress={handleNavigate}>
-          <Block justifyCenter alignCenter>
-            <Block
-              radius={4}
-              height={30}
-              width={4}
-              backgroundColor={COLORS.yellow}
-            />
-            <Block
-              radius={4}
-              absolute
-              height={4}
-              width={30}
-              backgroundColor={COLORS.yellow}
-            />
-          </Block>
-        </Pressable>
-      </Block>
+      <Text fontSize={12} bold uppercase color={COLORS.white_1}>
+        power sequence controller
+      </Text>
     </Block>
   );
 };

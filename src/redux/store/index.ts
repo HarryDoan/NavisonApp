@@ -23,7 +23,7 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   stateReconciler: autoMergeLevel2,
-  whitelist: ['appToken'],
+  whitelist: ['users'],
 };
 
 const pReducer = persistReducer(persistConfig, rootReducer);

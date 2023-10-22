@@ -40,10 +40,10 @@ const TabArr = [
   },
 ];
 
-const TabButton = props => {
+const TabButton = (props: any) => {
   const {item, onPress, accessibilityState} = props;
   const focused = accessibilityState.selected;
-  const viewRef = useRef(null);
+  const viewRef = useRef<any>(null);
 
   useEffect(() => {
     if (viewRef.current) {
@@ -68,24 +68,7 @@ const TabButton = props => {
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={1}
-      style={styles.container}>
-      <Animatable.View ref={viewRef} duration={1000} style={styles.container}>
-        <Image
-          style={{
-            width: 25,
-            height: 27,
-            resizeMode: 'stretch',
-          }}
-          source={focused ? item?.icon_active : item?.icon}
-        />
-      </Animatable.View>
-      <Text
-        fontSize={12}
-        bold
-        color={focused ? COLORS.yellow : COLORS.black_text}>
-        {item?.label}
-      </Text>
-    </TouchableOpacity>
+      style={styles.container}></TouchableOpacity>
   );
 };
 
@@ -95,7 +78,7 @@ const BottomContainer = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          height: 60,
+          height: 0,
           position: 'absolute',
           bottom: 0,
           right: 0,

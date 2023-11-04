@@ -88,7 +88,7 @@ interface BlockProps extends ViewProps {
   right?: number;
   bottom?: number;
   // color
-  backgroundColor?: string;
+  backgroundColor?: string | string[];
   borderColor?: string;
   color?: string;
   opacity?: number;

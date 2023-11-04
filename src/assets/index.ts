@@ -28,6 +28,10 @@ export const icons = {
 
   //Common Screen
   ic_go_back: require('./icons/ic_go_back.png'),
+  ic_arrow_up_down: require('./icons/ic_arrow_up_down.png'),
+
+  ic_medium_sign_wifi: require('./icons/medium_signal_wifi.png'),
+  ic_bad_sign_wifi: require('./icons/bad_signal_wifi.png'),
 };
 export const IMAGES = {
   img_1: require('./images/img_1.png'),

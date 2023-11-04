@@ -5,14 +5,27 @@ import {width} from '@utils/responses';
 import React from 'react';
 import {FlatList} from 'react-native';
 
-const ListChannel = ({data, setIsShowModal, setItemChoice}: any) => {
+const ListChannel = ({
+  data,
+  setIsShowModal,
+  setItemChoice,
+  disableMode,
+  maxHeight,
+}: any) => {
+  const handleChoiceItem = (item: any) => {
+    if (!disableMode) {
+      setItemChoice(item);
+      setIsShowModal(true);
+    }
+  };
+
   const _renderItem = ({item}: any) => {
     return (
       <Pressable
         onPress={() => {
-          setItemChoice(item);
-          setIsShowModal(true);
+          handleChoiceItem(item);
         }}
+        alignSelfCenter
         style={{
           flexDirection: 'row',
           alignItems: 'center',
@@ -48,17 +61,16 @@ const ListChannel = ({data, setIsShowModal, setItemChoice}: any) => {
 
         <Pressable
           onPress={() => {
-            setItemChoice(item);
-            setIsShowModal(true);
+            handleChoiceItem(item);
           }}
           borderRightRadius={100}
           style={{
             height: 50,
-            width: width * 0.8,
+            width: width * 0.75,
             backgroundColor: item?.status ? COLORS.on : COLORS.off,
             justifyContent: 'center',
             paddingHorizontal: 30,
-            marginLeft: -width * 0.05,
+            marginLeft: -width * 0.035,
             zIndex: -1,
           }}>
           <Text
@@ -73,7 +85,7 @@ const ListChannel = ({data, setIsShowModal, setItemChoice}: any) => {
   };
 
   return (
-    <Block paddingHorizontal={15}>
+    <Block paddingHorizontal={15} maxHeight={maxHeight}>
       <FlatList
         data={data}
         keyExtractor={(item: any) => item?.id}

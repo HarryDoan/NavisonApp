@@ -7,80 +7,128 @@ import {commonRoot} from '@navigation/NavigationRef';
 import Router from '@navigation/Router';
 import actions from '@redux/actions';
 import {COLORS} from '@theme';
-import {fakeData, updateStatus} from '@utils/fakeData';
+import {fakeData} from '@utils/fakeData';
 import {height, width} from '@utils/responses';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 
 const MainScreen = () => {
   const dispatch = useDispatch();
   const listCH = useSelector((state: any) => state?.users?.list_channel);
-  const sortListCH = listCH.sort((a: any, b: any) =>
-    a?.name.localeCompare(b?.name),
-  );
+  const statusMode = useSelector((state: any) => state?.users?.statusMode);
+  const filterNormalList = listCH
+    .filter(
+      (item: any) =>
+        item && item.isShow && item.timer !== 'OFF' && item.timer !== 'ON',
+    )
+    .sort((a: any, b: any) => a.order - b.order);
+
+  const modeDefault = filterNormalList?.length > 0 ? filterNormalList : listCH;
+
+  const [statusPowerBtn, setStatusPowerBtn] = useState<boolean>(false);
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
   const [itemChoice, setItemChoice] = useState<any>(null);
   const [disableMode, setDisableMode] = useState<boolean>(false);
+
   const timeoutRef = useRef<any>(null);
 
-  useEffect(() => {
-    dispatch({
-      type: actions.SAVE_LIST_CHANNEL,
-      payload: fakeData,
+  const updateStatusOn = (index: number) => {
+    modeDefault[index].status = true;
+  };
+
+  const updateStatusOff = (index: number) => {
+    modeDefault[index].status = false;
+  };
+
+  const handleConfigMode = () => {
+    commonRoot.navigate(Router.OTP_SCREEN, {
+      screen: 'CONFIG',
+      item: fakeData,
     });
-  }, [dispatch]);
-
-  const handleConfigMode = (mode: string | number) => {
-    let filterCondition;
-    if (mode === 1) {
-      filterCondition = (item: any) => item && item?.mode_1;
-    } else if (mode === 2) {
-      filterCondition = (item: any) => item && item?.mode_2;
-    } else {
-      filterCondition = (item: any) => item && item?.mode_3;
-    }
-
-    const newList = sortListCH?.filter(filterCondition);
-
-    commonRoot.navigate(Router.CONFIG_MODE_SCREEN, {item: sortListCH, mode});
   };
 
   const handleStartMode = () => {
+    dispatch({
+      type: actions.STATUS_MODE,
+    });
+    setStatusPowerBtn(true);
     setDisableMode(true);
     let index = 0;
-
     const processNextItem = () => {
-      if (index < sortListCH?.length) {
-        const itemToUpdate = sortListCH[index];
-        handleUpdateListChannel(itemToUpdate);
-        updateStatus(index);
+      if (index < modeDefault?.length) {
+        const itemToUpdate = modeDefault[index];
+        handleUpdateStatusOn(itemToUpdate);
+        updateStatusOn(index);
         index++;
-        setTimeout(processNextItem, itemToUpdate?.timer || 1000);
+        setTimeout(processNextItem, itemToUpdate?.timer || 150);
       } else {
         setDisableMode(false);
       }
     };
 
-    processNextItem();
+    setTimeout(processNextItem, 700);
   };
-  const handleUpdateListChannel = (i: any) => {
+
+  const handleOffMode = () => {
+    dispatch({
+      type: actions.STATUS_MODE,
+    });
+    setStatusPowerBtn(true);
+    setDisableMode(true);
+    let index = modeDefault?.length - 1;
+
+    const processNextItem = () => {
+      if (index >= 0) {
+        const itemToUpdate = modeDefault[index];
+        handleUpdateStatusOff(itemToUpdate);
+        updateStatusOff(index);
+        index--;
+        setTimeout(processNextItem, itemToUpdate?.timer || 150);
+      } else {
+        setDisableMode(false);
+        setStatusPowerBtn(false);
+      }
+    };
+
+    setTimeout(processNextItem, 700);
+  };
+
+  const handleUpdateStatusOn = (i: any) => {
     dispatch({
       type: actions.SAVE_LIST_CHANNEL,
-      payload: sortListCH?.map((item: any) =>
-        item?.name === i?.name ? {...item, status: !item?.status} : item,
+      payload: listCH?.map((item: any) =>
+        item?.name === i?.name ? {...item, status: true} : item,
       ),
     });
   };
+
+  const handleUpdateStatusOff = (i: any) => {
+    dispatch({
+      type: actions.SAVE_LIST_CHANNEL,
+      payload: listCH?.map((item: any) =>
+        item?.name === i?.name ? {...item, status: false} : item,
+      ),
+    });
+  };
+
   const handleChangeStatus = () => {
     setIsShowModal(false);
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
     timeoutRef.current = setTimeout(() => {
-      handleUpdateListChannel(itemChoice);
+      if (itemChoice?.status) {
+        handleUpdateStatusOff(itemChoice);
+      } else {
+        handleUpdateStatusOn(itemChoice);
+      }
     }, 500);
   };
+
+  console.log('====================================');
+  console.log('listCH: ', listCH);
+  console.log('====================================');
 
   return (
     <Block flex={1} backgroundColor={COLORS.bg_primary}>
@@ -88,49 +136,41 @@ const MainScreen = () => {
         <HeaderTitle />
 
         <ListChannel
+          maxHeight={height * 0.7}
+          disableMode={disableMode}
           setIsShowModal={setIsShowModal}
           setItemChoice={setItemChoice}
-          data={sortListCH}
+          data={listCH}
         />
       </Block>
       <Block
         paddingHorizontal={15}
         alignSelfCenter
         absolute
-        bottom={35}
+        bottom={15}
         width={'100%'}
         row
         spaceBetween>
         <Pressable
-          onLongPress={() => handleConfigMode(1)}
+          disabled={!statusPowerBtn ? false : true}
+          onPress={handleConfigMode}
           width={75}
           height={45}
           justifyCenter
           alignCenter
-          backgroundColor={COLORS.primary}
+          backgroundColor={statusPowerBtn ? COLORS.yellow_off : COLORS.primary}
           radius={5}>
           <Image source={icons.ic_setting} square={25} />
         </Pressable>
 
         <Pressable
-          onLongPress={() => handleConfigMode(2)}
-          width={75}
-          height={45}
-          justifyCenter
-          alignCenter
-          backgroundColor={COLORS.primary}
-          radius={5}>
-          <Image source={icons.ic_network} square={25} />
-        </Pressable>
-
-        <Pressable
           disabled={disableMode}
-          onPress={handleStartMode}
+          onPress={statusMode ? handleOffMode : handleStartMode}
           width={75}
           height={45}
           justifyCenter
           alignCenter
-          backgroundColor={!disableMode ? COLORS.power_off : COLORS.power_on}
+          backgroundColor={!statusMode ? COLORS.power_off : COLORS.power_on}
           radius={5}>
           <Image source={icons.ic_power} square={25} />
         </Pressable>

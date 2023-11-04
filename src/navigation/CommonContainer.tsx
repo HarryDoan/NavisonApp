@@ -22,6 +22,21 @@ const CommonContainer = () => {
         name={Router.CONFIG_MODE_SCREEN}
         component={common[Router.CONFIG_MODE_SCREEN]}
       />
+
+      <CommonStack.Screen
+        name={Router.OTP_SCREEN}
+        component={common[Router.OTP_SCREEN]}
+      />
+
+      <CommonStack.Screen
+        name={Router.SCAN_WIFI_SCREEN}
+        component={common[Router.SCAN_WIFI_SCREEN]}
+      />
+
+      <CommonStack.Screen
+        name={Router.CHANGE_KEY_SCREEN}
+        component={common[Router.CHANGE_KEY_SCREEN]}
+      />
     </CommonStack.Navigator>
   );
 };

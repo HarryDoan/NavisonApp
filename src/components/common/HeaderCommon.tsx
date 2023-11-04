@@ -3,15 +3,24 @@ import Block from '@components/base/Block';
 import Image from '@components/base/Image';
 import Pressable from '@components/base/Pressable';
 import Text from '@components/base/Text';
-import {root} from '@navigation/NavigationRef';
+import {bottomRoot, commonRoot, root} from '@navigation/NavigationRef';
+import Router from '@navigation/Router';
 import {COLORS} from '@theme';
 import React from 'react';
 
 type HeaderCommonType = {
   title: string;
+  notGoBack?: boolean;
 };
 
-const HeaderCommon = ({title}: HeaderCommonType) => {
+const HeaderCommon = ({title, notGoBack}: HeaderCommonType) => {
+  const handleClick = () => {
+    if (notGoBack) {
+      bottomRoot.navigate(Router.HOME_SCREEN);
+    } else {
+      root.goBack();
+    }
+  };
   return (
     <Block
       style={{
@@ -24,7 +33,7 @@ const HeaderCommon = ({title}: HeaderCommonType) => {
         justifyContent: 'center',
       }}>
       <Pressable
-        onPress={() => root.goBack()}
+        onPress={handleClick}
         justifyCenter
         alignCenter
         absolute
@@ -32,7 +41,7 @@ const HeaderCommon = ({title}: HeaderCommonType) => {
         <Image square={25} resizeMode="cover" source={icons.ic_go_back} />
       </Pressable>
       <Block>
-        <Text medium fontSize={18} color={COLORS.white_text}>
+        <Text medium fontSize={20} color={COLORS.white_text}>
           {title || ''}
         </Text>
       </Block>

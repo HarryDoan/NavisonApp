@@ -14,7 +14,6 @@ const HeaderHome = () => {
       style={{
         width: '100%',
         flexDirection: 'row',
-        paddingVertical: 15,
       }}>
       <Image
         style={{

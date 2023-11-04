@@ -86,8 +86,8 @@ interface PressProps extends PressableProps {
   borderDotted?: boolean;
   borderDashed?: boolean;
   // width, height
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
   maxWidth?: number;
   maxHeight?: number;
   square?: number;

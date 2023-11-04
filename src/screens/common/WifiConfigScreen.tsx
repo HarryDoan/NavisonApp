@@ -1,12 +1,18 @@
 import {Block, FormInput} from '@components';
 import HeaderCommon from '@components/common/HeaderCommon';
+import HeaderTitle from '@components/common/HeaderTitle';
+import {bottomRoot} from '@navigation/NavigationRef';
+import Router from '@navigation/Router';
+import {COLORS} from '@theme';
 import {ESP_URL} from '@utils';
 import axios from 'axios';
 import React, {useState} from 'react';
 
-const WifiConfigScreen = ({}) => {
-  const [ssid, setSsid] = useState('');
-  const [password, setPassword] = useState('');
+const WifiConfigScreen = ({route}: any) => {
+  const {item} = route?.params;
+
+  const [ssid, setSsid] = useState<string>(item?.SSID || '');
+  const [password, setPassword] = useState<string | number>('');
 
   const sendWifiConfig = async () => {
     const espIp = ESP_URL;
@@ -24,8 +30,9 @@ const WifiConfigScreen = ({}) => {
   };
 
   return (
-    <Block>
-      <HeaderCommon title={'Wifi Config'} />
+    <Block flex={1} backgroundColor={COLORS.bg_primary}>
+      <HeaderTitle />
+      <HeaderCommon notGoBack title={'Config Wifi'} />
       <FormInput
         setValue_1={setSsid}
         value_1={ssid}
@@ -33,7 +40,7 @@ const WifiConfigScreen = ({}) => {
         setValue_2={setPassword}
         value_2={password}
         placeHolder_value_2="Password"
-        handleDone={sendWifiConfig}
+        handleDone={() => bottomRoot.navigate(Router.HOME_SCREEN)}
         titleButton={'Done'}
         is_show_value_2={true}
       />

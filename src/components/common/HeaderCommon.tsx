@@ -3,7 +3,7 @@ import Block from '@components/base/Block';
 import Image from '@components/base/Image';
 import Pressable from '@components/base/Pressable';
 import Text from '@components/base/Text';
-import {bottomRoot, commonRoot, root} from '@navigation/NavigationRef';
+import {bottomRoot, root} from '@navigation/NavigationRef';
 import Router from '@navigation/Router';
 import {COLORS} from '@theme';
 import React from 'react';
@@ -13,7 +13,7 @@ type HeaderCommonType = {
   notGoBack?: boolean;
 };
 
-const HeaderCommon = ({title, notGoBack}: HeaderCommonType) => {
+const HeaderCommon = ({title, notGoBack = false}: HeaderCommonType) => {
   const handleClick = () => {
     if (notGoBack) {
       bottomRoot.navigate(Router.HOME_SCREEN);
@@ -32,14 +32,16 @@ const HeaderCommon = ({title, notGoBack}: HeaderCommonType) => {
         backgroundColor: COLORS.bg_primary,
         justifyContent: 'center',
       }}>
-      <Pressable
-        onPress={handleClick}
-        justifyCenter
-        alignCenter
-        absolute
-        left={10}>
-        <Image square={25} resizeMode="cover" source={icons.ic_go_back} />
-      </Pressable>
+      {!notGoBack && (
+        <Pressable
+          onPress={handleClick}
+          justifyCenter
+          alignCenter
+          absolute
+          left={10}>
+          <Image square={25} resizeMode="cover" source={icons.ic_go_back} />
+        </Pressable>
+      )}
       <Block>
         <Text medium fontSize={20} color={COLORS.white_text}>
           {title || ''}

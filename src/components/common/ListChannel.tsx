@@ -35,7 +35,7 @@ const ListChannel = ({
             width: 60,
             height: 60,
             borderRadius: 60,
-            backgroundColor: COLORS.bg_primary,
+            backgroundColor: COLORS.black,
             justifyContent: 'center',
             alignItems: 'center',
           }}>

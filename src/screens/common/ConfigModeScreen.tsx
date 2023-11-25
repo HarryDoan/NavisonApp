@@ -1,5 +1,12 @@
 import {icons} from '@assets';
-import {Block, ConfigChannels, Image, Pressable, Text} from '@components';
+import {
+  Block,
+  BottomComponent,
+  ConfigChannels,
+  Image,
+  Pressable,
+  Text,
+} from '@components';
 import HeaderCommon from '@components/common/HeaderCommon';
 import HeaderTitle from '@components/common/HeaderTitle';
 import {bottomRoot, commonRoot} from '@navigation/NavigationRef';
@@ -9,11 +16,12 @@ import {COLORS} from '@theme';
 import {fakeData} from '@utils/fakeData';
 import {height, width} from '@utils/responses';
 import React, {useEffect, useState} from 'react';
+import {ScrollView} from 'react-native';
 import {useDispatch} from 'react-redux';
 
 const ConfigModeScreen = ({route}: any) => {
   const dispatch = useDispatch();
-
+  const btn = {height: 40, width: 50};
   const {item} = route?.params;
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
   const [closeIcon, setCloseIcon] = useState<boolean>(false);
@@ -40,14 +48,22 @@ const ConfigModeScreen = ({route}: any) => {
   const mergedList = [...mergedMap.values()];
 
   const handleUpdateListData = () => {
+    const newMergedList = mergedList?.map((item: any) => {
+      return item?.timer !== 'ON' ? {...item, status: false} : item;
+    });
+
+    const newChildList = childList?.map((item: any) => {
+      return item?.timer !== 'ON' ? {...item, status: false} : item;
+    });
+
     dispatch({
       type: actions.SAVE_LIST_CHANNEL,
-      payload: mergedList,
+      payload: newMergedList,
     });
 
     dispatch({
       type: actions.SAVE_LIST_CHANNEL_TO_SHOW,
-      payload: childList,
+      payload: newChildList,
     });
 
     setTimeout(() => {
@@ -84,59 +100,53 @@ const ConfigModeScreen = ({route}: any) => {
         isShowModal={isShowModal}
         data={item}
       />
+
       {!closeIcon && (
-        <Block
-          paddingHorizontal={15}
-          alignSelfCenter
-          absolute
-          bottom={15}
-          width={'100%'}
-          row
-          spaceBetween>
+        <BottomComponent backgroundColor={COLORS.on}>
           <Pressable
             onPress={handleGoHome}
-            width={75}
-            height={45}
+            width={btn?.width}
+            height={btn?.height}
             justifyCenter
             alignCenter
-            backgroundColor={COLORS.yellow_off}
+            backgroundColor={COLORS.yellow}
             radius={5}>
             <Image source={icons.ic_home} square={25} />
           </Pressable>
 
           <Pressable
             onPress={handleConfigWifi}
-            width={75}
-            height={45}
+            width={btn?.width}
+            height={btn?.height}
             justifyCenter
             alignCenter
-            backgroundColor={COLORS.yellow_off}
+            backgroundColor={COLORS.yellow}
             radius={5}>
             <Image source={icons.ic_network} square={25} />
           </Pressable>
 
           <Pressable
             onPress={() => handleNavigateChangKeyScreen()}
-            width={75}
-            height={45}
+            width={btn?.width}
+            height={btn?.height}
             justifyCenter
             alignCenter
-            backgroundColor={COLORS.power_off}
+            backgroundColor={COLORS.power_on}
             radius={5}>
             <Image source={icons.ic_key} square={25} />
           </Pressable>
 
           <Pressable
             onPress={() => setIsShowModalConfirmSave(true)}
-            width={75}
-            height={45}
+            width={btn?.width}
+            height={btn?.height}
             justifyCenter
             alignCenter
-            backgroundColor={COLORS.power_off}
+            backgroundColor={COLORS.power_on}
             radius={5}>
             <Image source={icons.ic_save} square={25} />
           </Pressable>
-        </Block>
+        </BottomComponent>
       )}
       {isShowModalConfirmSave && (
         <Pressable

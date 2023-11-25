@@ -1,8 +1,9 @@
 export const COLORS = {
-  bg_primary: '#313131',
+  bg_primary: '#000',
+  black: '#000',
   primary: '#D8C149',
   on: '#4D4D4D',
-  off: '#3E3E3E',
+  off: '#343434',
   yellow: '#FFCC00',
   gray: '#707889',
   gray1: 'rgba(255,255,255,0.25)',
@@ -14,7 +15,7 @@ export const COLORS = {
   text_off: '#9A9A9A',
   white: '#FFFFFF',
   white_1: '#BCBCBC',
-  yellow_off: '#987F18',
+  yellow_off: '#4D410D',
   power_off: '#187E9A',
   power_on: '#00CCFF',
 

@@ -124,11 +124,7 @@ const FormInputChangeKey = ({
           </Block>
         </Block>
       )}
-      <Button
-        color={COLORS.yellow_off}
-        title={titleButton}
-        onPress={handleDone}
-      />
+      <Button color={COLORS.primary} title={titleButton} onPress={handleDone} />
     </Pressable>
   );
 };

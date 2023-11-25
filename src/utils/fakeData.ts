@@ -69,7 +69,6 @@ export let fakeData = [
 
 export const listTimer = [
   'ON',
-  'OFF',
   0,
   1,
   2,

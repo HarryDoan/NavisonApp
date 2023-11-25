@@ -1,6 +1,13 @@
 /* eslint-disable prettier/prettier */
 import {icons} from '@assets';
-import {Block, Image, Pressable, Text} from '@components';
+import {
+  Block,
+  BottomComponent,
+  Image,
+  Pressable,
+  Text,
+  TopComponent,
+} from '@components';
 import HeaderTitle from '@components/common/HeaderTitle';
 import ListChannel from '@components/common/ListChannel';
 import {commonRoot} from '@navigation/NavigationRef';
@@ -10,6 +17,7 @@ import {COLORS} from '@theme';
 import {fakeData} from '@utils/fakeData';
 import {height, width} from '@utils/responses';
 import React, {useRef, useState} from 'react';
+import {ScrollView} from 'react-native';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 
@@ -48,50 +56,50 @@ const MainScreen = () => {
     });
   };
 
-  const handleStartMode = () => {
+  const handleStartMode = async () => {
     dispatch({
       type: actions.STATUS_MODE,
     });
     setStatusPowerBtn(true);
     setDisableMode(true);
-    let index = 0;
-    const processNextItem = () => {
-      if (index < modeDefault?.length) {
-        const itemToUpdate = modeDefault[index];
-        handleUpdateStatusOn(itemToUpdate);
-        updateStatusOn(index);
-        index++;
-        setTimeout(processNextItem, itemToUpdate?.timer || 150);
-      } else {
-        setDisableMode(false);
-      }
-    };
 
-    setTimeout(processNextItem, 700);
+    const modeLength = modeDefault.length;
+
+    for (let index = 0; index < modeLength; index++) {
+      const itemToUpdate = modeDefault[index];
+      await new Promise((resolve: any) => {
+        setTimeout(() => {
+          handleUpdateStatusOn(itemToUpdate);
+          updateStatusOn(index);
+          if (index === modeLength - 1) {
+            setDisableMode(false);
+          }
+          resolve();
+        }, itemToUpdate?.timer || 1);
+      });
+    }
   };
 
-  const handleOffMode = () => {
+  const handleOffMode = async () => {
     dispatch({
       type: actions.STATUS_MODE,
     });
     setStatusPowerBtn(true);
     setDisableMode(true);
-    let index = modeDefault?.length - 1;
 
-    const processNextItem = () => {
-      if (index >= 0) {
-        const itemToUpdate = modeDefault[index];
-        handleUpdateStatusOff(itemToUpdate);
-        updateStatusOff(index);
-        index--;
-        setTimeout(processNextItem, itemToUpdate?.timer || 150);
-      } else {
-        setDisableMode(false);
-        setStatusPowerBtn(false);
-      }
-    };
+    for (let index = modeDefault?.length - 1; index >= 0; index--) {
+      const itemToUpdate = modeDefault[index];
+      await new Promise((resolve: any) => {
+        setTimeout(() => {
+          handleUpdateStatusOff(itemToUpdate);
+          updateStatusOff(index);
+          resolve();
+        }, itemToUpdate?.timer || 1);
+      });
+    }
 
-    setTimeout(processNextItem, 700);
+    setStatusPowerBtn(false);
+    setDisableMode(false);
   };
 
   const handleUpdateStatusOn = (i: any) => {
@@ -126,15 +134,15 @@ const MainScreen = () => {
     }, 500);
   };
 
-  console.log('====================================');
-  console.log('listCH: ', listCH);
-  console.log('====================================');
-
   return (
-    <Block flex={1} backgroundColor={COLORS.bg_primary}>
-      <Block>
-        <HeaderTitle />
-
+    <Block flex={1} backgroundColor={COLORS.black}>
+      <HeaderTitle />
+      <ScrollView>
+        <TopComponent marginVertical={15}>
+          <Text fontSize={38} semiBold lineHeight={42} color={'aqua'}>
+            ~ 220.6v
+          </Text>
+        </TopComponent>
         <ListChannel
           maxHeight={height * 0.7}
           disableMode={disableMode}
@@ -142,15 +150,16 @@ const MainScreen = () => {
           setItemChoice={setItemChoice}
           data={listCH}
         />
-      </Block>
-      <Block
-        paddingHorizontal={15}
+
+        <Block height={200} />
+      </ScrollView>
+
+      <BottomComponent
+        radius={15}
+        backgroundColor={COLORS.on}
+        paddingVertical={20}
         alignSelfCenter
-        absolute
-        bottom={15}
-        width={'100%'}
-        row
-        spaceBetween>
+        paddingHorizontal={20}>
         <Pressable
           disabled={!statusPowerBtn ? false : true}
           onPress={handleConfigMode}
@@ -174,7 +183,7 @@ const MainScreen = () => {
           radius={5}>
           <Image source={icons.ic_power} square={25} />
         </Pressable>
-      </Block>
+      </BottomComponent>
       {isShowModal && (
         <Pressable
           backgroundColor={COLORS.gray1}

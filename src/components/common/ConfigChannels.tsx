@@ -23,22 +23,19 @@ const ListChannel = ({
   maxHeight,
   setCloseIcon,
 }: any) => {
-  const dataDefault = fakeData.map((item: any) => {
-    return {...item, status: true};
-  });
-
   const previousList = useSelector(
     (state: any) => state.users?.list_channel_to_show,
   );
+  const listOrderNew = listOrder?.filter((item: any) => {
+    return item && item?.timer >= 0;
+  });
 
   const [itemChoice, setItemChoice] = useState<any>(null);
 
   useEffect(() => {
     setListOrder(previousList?.length > 0 ? previousList : fakeData);
   }, [previousList]);
-  console.log('====================================');
-  console.log(previousList);
-  console.log('====================================');
+
   const handleChangeText = (e: string, item: any) => {
     const currentIndex = listOrder.findIndex(
       (l: any) => l?.name === item?.name,
@@ -73,7 +70,19 @@ const ListChannel = ({
   };
 
   const isInList = (i: any) => {
-    const currentIndex = listOrder.findIndex((l: any) => l?.name === i?.name);
+    const currentIndex = listOrderNew.findIndex(
+      (l: any) => l?.name === i?.name,
+    );
+    if (currentIndex !== -1) {
+      return +currentIndex + 1;
+    }
+    return false;
+  };
+
+  const isInLisOn = (i: any) => {
+    const currentIndex = listOrder.findIndex(
+      (l: any) => l?.name === i?.name && l?.timer === 'ON',
+    );
     if (currentIndex !== -1) {
       return +currentIndex + 1;
     }
@@ -148,9 +157,10 @@ const ListChannel = ({
               width: 50,
               height: 50,
               borderRadius: 50,
-              backgroundColor: isInList(item)
-                ? COLORS.yellow
-                : COLORS.yellow_off,
+              backgroundColor:
+                isInList(item) || isInLisOn(item)
+                  ? COLORS.yellow
+                  : COLORS.yellow_off,
               justifyContent: 'center',
               alignItems: 'center',
             }}>
@@ -182,7 +192,11 @@ const ListChannel = ({
 
         <Pressable
           onPress={() => {
-            handleShowListCount(isInList(item), setIsShowModal, item);
+            handleShowListCount(
+              isInList(item) || isInLisOn(item),
+              setIsShowModal,
+              item,
+            );
           }}
           row
           radius={5}
@@ -190,14 +204,19 @@ const ListChannel = ({
             height: 50,
             width: 75,
             paddingHorizontal: 5,
-            backgroundColor: isInList(item) ? COLORS.on : COLORS.off,
+            backgroundColor:
+              isInList(item) || isInLisOn(item) ? COLORS.on : COLORS.off,
             justifyContent: 'space-around',
             alignItems: 'center',
             marginRight: 10,
             marginLeft: 3,
           }}>
           <Text
-            color={isInList(item) ? COLORS.text_on : COLORS.text_off}
+            color={
+              isInList(item) || isInLisOn(item)
+                ? COLORS.text_on
+                : COLORS.text_off
+            }
             medium
             fontSize={16}>
             {renderTimer(item) === 'ON'
@@ -215,7 +234,8 @@ const ListChannel = ({
           style={{
             height: 50,
             width: width * 0.5,
-            backgroundColor: isInList(item) ? COLORS.on : COLORS.off,
+            backgroundColor:
+              isInList(item) || isInLisOn(item) ? COLORS.on : COLORS.off,
             justifyContent: 'center',
           }}>
           <TextInput
@@ -223,15 +243,23 @@ const ListChannel = ({
             onFocus={() => setCloseIcon(true)}
             editable={isInList(item) ? true : false}
             style={{
-              backgroundColor: isInList(item) ? COLORS.on : COLORS.off,
+              height: 50,
+              borderRadius: 40,
+              backgroundColor:
+                isInList(item) || isInLisOn(item) ? COLORS.on : COLORS.off,
               width: width * 0.5,
               paddingHorizontal: 10,
               fontSize: 16,
               fontWeight: '500',
-              color: isInList(item) ? COLORS.text_on : COLORS.text_off,
+              color:
+                isInList(item) || isInLisOn(item)
+                  ? COLORS.text_on
+                  : COLORS.text_off,
             }}
             placeholderTextColor={
-              isInList(item) ? COLORS.text_on : COLORS.text_off
+              isInList(item) || isInLisOn(item)
+                ? COLORS.text_on
+                : COLORS.text_off
             }
             maxLength={30}
             placeholder={isInListPlaceHolder(item) || item?.title}
@@ -260,7 +288,7 @@ const ListChannel = ({
           }}
           renderItem={_renderItem}
           ListFooterComponent={() => {
-            return <Block height={30} />;
+            return <Block height={150} />;
           }}
         />
         {isShowModal && (
